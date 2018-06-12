@@ -31,7 +31,6 @@ public class kafkaConsumerService {
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String ,String> consumer = new KafkaConsumer<String ,String>(props);
         consumer.subscribe(Arrays.asList("tests"));
-        TopicPartition partition0 = new TopicPartition("tests", 0);
         final int minBatchSize = 5;  //批量提交数量
         List<ConsumerRecord<String, String>> buffer = new ArrayList<>();
         while (true) {

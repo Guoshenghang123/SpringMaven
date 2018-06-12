@@ -1,17 +1,15 @@
 package com.guosh.controller;
 
 import com.guosh.dao.CommonDao;
-import com.guosh.kafaka.KafkaConsumerDemo;
-import com.guosh.kafaka.KafkaProducerDemo;
 import com.guosh.redis.RedisCluster;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import redis.clients.jedis.JedisCluster;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 /**
@@ -26,12 +24,10 @@ public class HelloController {
 
     @Autowired
     private CommonDao commonDao;
+
+
     @Autowired
-    private KafkaProducerDemo producer;
-    @Autowired
-    KafkaConsumerDemo kafkaConsumerDemo;
-    @Autowired
-    private KafkaConsumerDemo consumer;
+    private KafkaTemplate<Integer, String> kafkaTemplate;
     @RequestMapping("/helloWorld")
     public String helloWorld(Model model) {
         if (jedisCluster.set("guosh", "sucess") == "1") {
@@ -41,8 +37,7 @@ public class HelloController {
         };
         Map<String, Object> a=new HashMap<>();
         try{
-            producer.sendMessage("123");
-            kafkaConsumerDemo.receive();
+            kafkaTemplate.sendDefault("test it");
             commonDao.T_SYS_STAFF(a);
         }catch (Exception ex){
             ex.printStackTrace();
