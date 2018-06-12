@@ -75,14 +75,23 @@
         </constructor-arg>
     </bean>
 
+    <!--同时配置2个topic 创建2个的消费者容器，然后统一指向listner的消息处理类，统一让这个类进行后续业务处理-->
     <bean id="containerProperties" class="org.springframework.kafka.listener.config.ContainerProperties">
         <constructor-arg value="tests"/>
         <property name="messageListener" ref="messageListernerConsumerService"/>
     </bean>
+    <bean id="containerProperties_topictest" class="org.springframework.kafka.listener.config.ContainerProperties">
+    <constructor-arg value="topictest"/>
+    <property name="messageListener" ref="messageListernerConsumerService"/>
+</bean>
 
     <bean id="messageListenerContainer" class="org.springframework.kafka.listener.KafkaMessageListenerContainer" init-method="doStart">
         <constructor-arg ref="consumerFactory"/>
         <constructor-arg ref="containerProperties"/>
+    </bean>
+    <bean id="messageListenerContainer_topictest" class="org.springframework.kafka.listener.KafkaMessageListenerContainer" init-method="doStart">
+        <constructor-arg ref="consumerFactory"/>
+        <constructor-arg ref="containerProperties_topictest"/>
     </bean>
     <!--kafakaConsumer 配置结束-->
 </beans>
