@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+
+    <context:component-scan base-package="com.guosh.*" />
+
+    <bean id="kafkaProducerDemo" class="com.guosh.kafaka.KafkaProducerDemo">
+        <property name="properties">
+            <props>
+                <prop key="topic">my-replicated-topic</prop>
+                <prop key="bootstrap.servers">172.16.10.15:9092,172.16.10.15:9093,172.16.10.15:9094</prop>
+                <prop key="acks">all</prop>
+                <prop key="key.serializer">org.apache.kafka.common.serialization.StringSerializer
+                </prop>
+                <prop key="value.serializer">org.apache.kafka.common.serialization.StringSerializer
+                </prop>
+                <prop key="buffer.memory">33554432</prop>
+            </props>
+
+        </property>
+    </bean>
+
+    <bean id="kafkaConsumerDemo" class="com.guosh.kafaka.KafkaConsumerDemo">
+        <property name="props">
+            <props>
+                <prop key="topic">my-replicated-topic</prop>
+                <prop key="bootstrap.servers">172.16.10.15:9092,172.16.10.15:9093,172.16.10.15:9094</prop>
+                <prop key="group.id">group1</prop>
+                <prop key="enable.auto.commit">true</prop>
+                <prop key="auto.commit.interval.ms">1000</prop>
+                <prop key="session.timeout.ms">30000</prop>
+                <prop key="key.deserializer">org.apache.kafka.common.serialization.StringDeserializer
+                </prop>
+                <prop key="value.deserializer">org.apache.kafka.common.serialization.StringDeserializer
+                </prop>
+            </props>
+
+        </property>
+    </bean>
+</beans>
